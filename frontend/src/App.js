@@ -7,9 +7,9 @@ import Product from "./Pages/Product.jsx"
 import LoginSignUp from "./Pages/LoginSignUp.jsx"
 import Cart from "./Pages/Cart.jsx"
 import Footer from './Components/Footer/Footer.jsx';
-import men_banner from './Components/Assets/Frontend_Assets/banner_mens.png'
-import women_banner from './Components/Assets/Frontend_Assets/banner_women.png'
-import kid_banner from './Components/Assets/Frontend_Assets/banner_kids.png'
+import men_banner from './Components/Assets/banner_mens.png'
+import women_banner from './Components/Assets/banner_women.png'
+import kid_banner from './Components/Assets/banner_kids.png'
 
 function App() {
   return (
