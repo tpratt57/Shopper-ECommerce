@@ -84,7 +84,7 @@ const Products = mongoose.model("Product", {
 
 // Creating API to add products to database
 
-app.post('/addproduct', async (req, res) => {
+app.post('/add-product', async (req, res) => {
     let products = await Products.find({});
     let id;
     if (products.length > 0) {
@@ -117,7 +117,7 @@ app.post('/addproduct', async (req, res) => {
 
 // Creating API For Deleting Products
 
-app.post('/removeproduct', async (req, res) => {
+app.post('/remove-product', async (req, res) => {
     await Products.findOneAndDelete({ id: req.body.id });
     console.log("Removed");
 
@@ -129,7 +129,7 @@ app.post('/removeproduct', async (req, res) => {
 
 // Creating API for getting all products
 
-app.get('/allproducts', async (req, res) => {
+app.get('/all-products', async (req, res) => {
     let products = await Products.find({})
     console.log("All Products Fetched")
 
@@ -219,12 +219,65 @@ app.post('/login', async (req, res) => {
 });
 
 // Endpoint For newCollection data
-app.get('/newcollections', async (req, res) => {
+app.get('/new-collections', async (req, res) => {
     let products = await Products.find({});
     let newcollection = products.slice(1).slice(-8);
     console.log("New Collection Fetched")
     res.send(newcollection)
 })
+
+// Endpoint for Popular in Women Section
+app.get('/popular-in-women', async (req, res) => {
+    let products = await Products.find({category:"womens"});
+    let popular_in_women = products.slice(0,4);
+    console.log("Popular In Women Fetched")
+    res.send(popular_in_women);
+
+})
+
+//Middleware to fetch user
+const fetchUser = async (req, res, next) => {
+    const token = req.header('auth-token');
+    if (!token) {
+        res.status(401).send({errors:"Please authenticate using valid token"})
+    }
+    else{
+        try{
+            const data = jwt.verify(token, 'secret_ecom');
+            req.user = data.user;
+            next();
+        } catch (error){
+            res.status(401).send({errors: "Please authenticate using a valid token"})
+        }
+    }
+}
+
+//Endpoint for adding products to cartData
+app.post('/add-to-cart',fetchUser, async (req, res) => {
+    console.log("Added", req.body.itemId);
+    let userData = await Users.findOne({_id:req.user.id});
+    userData.cartData[req.body.itemId] += 1;
+    await Users.findOneAndUpdate({_id:req.user.id}, {cartData:userData.cartData});
+    res.send("Added")
+})
+
+
+//Endpoint to remove products from cartData
+app.post('/remove-from-cart', fetchUser, async (req, res) => {
+    console.log("Removed", req.body.itemId);
+    let userData = await Users.findOne({_id:req.user.id});
+    if(userData.cartData[req.body.itemId]>0)
+    userData.cartData[req.body.itemId] -= 1;
+    await Users.findOneAndUpdate({_id:req.user.id}, {cartData:userData.cartData});
+    res.send("Removed")
+})
+
+//Endpoint to get cartData
+app.post('/get-cart', fetchUser, async (req, res) => {
+    console.log("GetCart");
+    let userData = await Users.findOne({_id:req.user.id});
+    res.json(userData.cartData);
+});
 
 app.listen(port, (error) => {
     if (!error) {
