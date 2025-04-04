@@ -14,10 +14,12 @@ const LoginSignUp = () => {
     setFormData({...formData, [e.target.name]: e.target.value})
   }
 
+  const backendURL = process.env.REACT_APP_BACKEND_URL;
+
   const login = async () => {
     console.log("Login Function Executed", formData)
     let responseData;
-    await fetch('http://localhost:4000/login', {
+    await fetch(`${backendURL}/login`, {
       method: 'POST',
       headers: {
         Accept: 'application/form-data',
@@ -39,7 +41,7 @@ const LoginSignUp = () => {
   const signup = async () => {
     console.log("Sign-Up Function Executed", formData)
     let responseData;
-    await fetch('http://localhost:4000/signup', {
+    await fetch(`${backendURL}/signup`, {
       method: 'POST',
       headers: {
         Accept: 'application/form-data',
