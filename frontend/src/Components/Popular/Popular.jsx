@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Popular.css'
 import Item from '../Item/Item'
 
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 
 const Popular = () => {
 
@@ -10,7 +10,7 @@ const Popular = () => {
 
     const [popularProducts, setPopularProducts] = useState([]);
     useEffect(() => {
-        fetch(`${backendURL}/popular-in-women`)
+        fetch("http://localhost:4000/popular-in-women")
         .then((response)=>response.json())
         .then((data)=>setPopularProducts(data))
     },[])

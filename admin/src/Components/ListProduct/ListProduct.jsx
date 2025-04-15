@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import './ListProduct.css'
 import cross_icon from '../../assets/cross_icon.png';
 
-const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 const ListProduct = () => {
   const [allproducts, setAllProducts] = useState([]);
@@ -19,7 +18,7 @@ const ListProduct = () => {
   }, [])
 
 const remove_product = async (id) => {
-  await fetch(`${backendURL}/remove-product`, {
+  await fetch("http://localhost4000/remove-product", {
     method: 'POST',
     headers:{
       Accept: 'application/json',

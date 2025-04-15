@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './NewCollections.css'
 import Item from '../Item/Item.jsx'
 
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+
 const NewCollections = () => {
 
   const [new_collection, setNew_collection] = useState([]);
@@ -10,7 +10,7 @@ const NewCollections = () => {
   
 
   useEffect(() => {
-    fetch(`${backendURL}/new-collections`)
+    fetch("http://localhost:4000/new-collections")
     .then((response)=>response.json())
     .then((data)=>setNew_collection(data));
   },[])
